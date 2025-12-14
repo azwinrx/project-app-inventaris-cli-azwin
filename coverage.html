@@ -59,43 +59,47 @@
 				
 				<option value="file1">project-app-inventaris-cli-azwin/cmd/categorysub.go (0.0%)</option>
 				
-				<option value="file2">project-app-inventaris-cli-azwin/cmd/clear_screen.go (0.0%)</option>
+				<option value="file2">project-app-inventaris-cli-azwin/cmd/clear_screen.go (57.1%)</option>
 				
-				<option value="file3">project-app-inventaris-cli-azwin/cmd/home.go (0.0%)</option>
+				<option value="file3">project-app-inventaris-cli-azwin/cmd/flag.go (32.3%)</option>
 				
-				<option value="file4">project-app-inventaris-cli-azwin/cmd/management.go (0.0%)</option>
+				<option value="file4">project-app-inventaris-cli-azwin/cmd/home.go (0.0%)</option>
 				
-				<option value="file5">project-app-inventaris-cli-azwin/cmd/managementsub.go (0.0%)</option>
+				<option value="file5">project-app-inventaris-cli-azwin/cmd/management.go (0.0%)</option>
 				
-				<option value="file6">project-app-inventaris-cli-azwin/cmd/reportsub.go (0.0%)</option>
+				<option value="file6">project-app-inventaris-cli-azwin/cmd/managementsub.go (0.0%)</option>
 				
-				<option value="file7">project-app-inventaris-cli-azwin/database/db.go (0.0%)</option>
+				<option value="file7">project-app-inventaris-cli-azwin/cmd/reportsub.go (0.0%)</option>
 				
-				<option value="file8">project-app-inventaris-cli-azwin/handler/category.go (47.1%)</option>
+				<option value="file8">project-app-inventaris-cli-azwin/cmd/root.go (0.0%)</option>
 				
-				<option value="file9">project-app-inventaris-cli-azwin/handler/management.go (60.4%)</option>
+				<option value="file9">project-app-inventaris-cli-azwin/database/db.go (100.0%)</option>
 				
-				<option value="file10">project-app-inventaris-cli-azwin/handler/old.go (100.0%)</option>
+				<option value="file10">project-app-inventaris-cli-azwin/handler/category.go (47.1%)</option>
 				
-				<option value="file11">project-app-inventaris-cli-azwin/handler/report.go (100.0%)</option>
+				<option value="file11">project-app-inventaris-cli-azwin/handler/management.go (60.4%)</option>
 				
-				<option value="file12">project-app-inventaris-cli-azwin/main.go (0.0%)</option>
+				<option value="file12">project-app-inventaris-cli-azwin/handler/old.go (100.0%)</option>
 				
-				<option value="file13">project-app-inventaris-cli-azwin/repository/category.go (89.8%)</option>
+				<option value="file13">project-app-inventaris-cli-azwin/handler/report.go (100.0%)</option>
 				
-				<option value="file14">project-app-inventaris-cli-azwin/repository/management.go (87.9%)</option>
+				<option value="file14">project-app-inventaris-cli-azwin/main.go (0.0%)</option>
 				
-				<option value="file15">project-app-inventaris-cli-azwin/repository/old.go (100.0%)</option>
+				<option value="file15">project-app-inventaris-cli-azwin/repository/category.go (89.8%)</option>
 				
-				<option value="file16">project-app-inventaris-cli-azwin/repository/report.go (100.0%)</option>
+				<option value="file16">project-app-inventaris-cli-azwin/repository/management.go (87.9%)</option>
 				
-				<option value="file17">project-app-inventaris-cli-azwin/service/category.go (100.0%)</option>
+				<option value="file17">project-app-inventaris-cli-azwin/repository/old.go (100.0%)</option>
 				
-				<option value="file18">project-app-inventaris-cli-azwin/service/management.go (100.0%)</option>
+				<option value="file18">project-app-inventaris-cli-azwin/repository/report.go (100.0%)</option>
 				
-				<option value="file19">project-app-inventaris-cli-azwin/service/old.go (100.0%)</option>
+				<option value="file19">project-app-inventaris-cli-azwin/service/category.go (100.0%)</option>
 				
-				<option value="file20">project-app-inventaris-cli-azwin/service/report.go (100.0%)</option>
+				<option value="file20">project-app-inventaris-cli-azwin/service/management.go (100.0%)</option>
+				
+				<option value="file21">project-app-inventaris-cli-azwin/service/old.go (100.0%)</option>
+				
+				<option value="file22">project-app-inventaris-cli-azwin/service/report.go (100.0%)</option>
 				
 				</select>
 			</div>
@@ -325,8 +329,8 @@ import (
         "runtime"
 )
 
-func ClearScreen() <span class="cov0" title="0">{
-        if runtime.GOOS == "windows" </span><span class="cov0" title="0">{
+func ClearScreen() <span class="cov8" title="1">{
+        if runtime.GOOS == "windows" </span><span class="cov8" title="1">{
                 cmd := exec.Command("cmd", "/c", "cls")
                 cmd.Stdout = os.Stdout
                 cmd.Run()
@@ -339,6 +343,396 @@ func ClearScreen() <span class="cov0" title="0">{
 </pre>
 		
 		<pre class="file" id="file3" style="display: none">package cmd
+
+import (
+        "fmt"
+        "project-app-inventaris-cli-azwin/handler"
+
+        "github.com/spf13/cobra"
+)
+
+// Global variables untuk handlers (akan diinject dari main)
+var (
+        handlerCategory   *handler.HandlerCategory
+        handlerManagement *handler.HandlerManagement
+        handlerOld        *handler.HandlerOld
+        handlerReport     *handler.HandlerReport
+)
+
+// Flags untuk kategori
+var (
+        categoryID          int
+        categoryName        string
+        categoryDescription string
+)
+
+// Flags untuk item inventaris
+var (
+        itemID          int
+        itemCategoryID  int
+        itemName        string
+        itemPrice       float64
+        itemPurchaseDate string
+        searchKeyword   string
+)
+
+// ==================== CATEGORY COMMANDS ====================
+
+var categoryCmd = &amp;cobra.Command{
+        Use:   "category",
+        Short: "Manajemen kategori barang",
+}
+
+var categoryListCmd = &amp;cobra.Command{
+        Use:   "list",
+        Short: "Menampilkan semua kategori",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerCategory == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler category belum diinisialisasi")
+                        return
+                }</span>
+                <span class="cov0" title="0">handlerCategory.GetCategory()</span>
+        },
+}
+
+var categoryAddCmd = &amp;cobra.Command{
+        Use:   "add",
+        Short: "Menambahkan kategori baru",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerCategory == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler category belum diinisialisasi")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if categoryName == "" </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Nama kategori tidak boleh kosong")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">handlerCategory.AddCategory(categoryName, categoryDescription)</span>
+        },
+}
+
+var categoryDetailCmd = &amp;cobra.Command{
+        Use:   "detail",
+        Short: "Menampilkan detail kategori berdasarkan ID",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerCategory == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler category belum diinisialisasi")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if categoryID &lt;= 0 </span><span class="cov0" title="0">{
+                        fmt.Println("Error: ID kategori harus lebih dari 0")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">handlerCategory.GetCategoryById(categoryID)</span>
+        },
+}
+
+var categoryUpdateCmd = &amp;cobra.Command{
+        Use:   "update",
+        Short: "Mengupdate kategori",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerCategory == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler category belum diinisialisasi")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if categoryID &lt;= 0 </span><span class="cov0" title="0">{
+                        fmt.Println("Error: ID kategori harus lebih dari 0")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if categoryName == "" </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Nama kategori tidak boleh kosong")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">handlerCategory.UpdateCategory(categoryID, categoryName, categoryDescription)</span>
+        },
+}
+
+var categoryDeleteCmd = &amp;cobra.Command{
+        Use:   "delete",
+        Short: "Menghapus kategori",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerCategory == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler category belum diinisialisasi")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if categoryID &lt;= 0 </span><span class="cov0" title="0">{
+                        fmt.Println("Error: ID kategori harus lebih dari 0")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">handlerCategory.DeleteCategory(categoryID)</span>
+        },
+}
+
+// ==================== ITEM COMMANDS ====================
+
+var itemCmd = &amp;cobra.Command{
+        Use:   "item",
+        Short: "Manajemen barang inventaris",
+}
+
+var itemListCmd = &amp;cobra.Command{
+        Use:   "list",
+        Short: "Menampilkan semua barang inventaris",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerManagement == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler management belum diinisialisasi")
+                        return
+                }</span>
+                <span class="cov0" title="0">handlerManagement.GetAllItems()</span>
+        },
+}
+
+var itemAddCmd = &amp;cobra.Command{
+        Use:   "add",
+        Short: "Menambahkan barang inventaris baru",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerManagement == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler management belum diinisialisasi")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if itemCategoryID &lt;= 0 </span><span class="cov0" title="0">{
+                        fmt.Println("Error: ID kategori harus lebih dari 0")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if itemName == "" </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Nama barang tidak boleh kosong")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if itemPrice &lt;= 0 </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Harga barang harus lebih dari 0")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if itemPurchaseDate == "" </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Tanggal pembelian tidak boleh kosong (format: YYYY-MM-DD)")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">handlerManagement.AddItem(itemCategoryID, itemName, itemPrice, itemPurchaseDate)</span>
+        },
+}
+
+var itemDetailCmd = &amp;cobra.Command{
+        Use:   "detail",
+        Short: "Menampilkan detail barang berdasarkan ID",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerManagement == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler management belum diinisialisasi")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if itemID &lt;= 0 </span><span class="cov0" title="0">{
+                        fmt.Println("Error: ID barang harus lebih dari 0")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">handlerManagement.GetItemById(itemID)</span>
+        },
+}
+
+var itemUpdateCmd = &amp;cobra.Command{
+        Use:   "update",
+        Short: "Mengupdate barang inventaris",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerManagement == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler management belum diinisialisasi")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if itemID &lt;= 0 </span><span class="cov0" title="0">{
+                        fmt.Println("Error: ID barang harus lebih dari 0")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if itemCategoryID &lt;= 0 </span><span class="cov0" title="0">{
+                        fmt.Println("Error: ID kategori harus lebih dari 0")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if itemName == "" </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Nama barang tidak boleh kosong")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if itemPrice &lt;= 0 </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Harga barang harus lebih dari 0")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if itemPurchaseDate == "" </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Tanggal pembelian tidak boleh kosong (format: YYYY-MM-DD)")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">handlerManagement.UpdateItem(itemID, itemCategoryID, itemName, itemPrice, itemPurchaseDate)</span>
+        },
+}
+
+var itemDeleteCmd = &amp;cobra.Command{
+        Use:   "delete",
+        Short: "Menghapus barang inventaris",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerManagement == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler management belum diinisialisasi")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if itemID &lt;= 0 </span><span class="cov0" title="0">{
+                        fmt.Println("Error: ID barang harus lebih dari 0")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">handlerManagement.DeleteItem(itemID)</span>
+        },
+}
+
+var itemSearchCmd = &amp;cobra.Command{
+        Use:   "search",
+        Short: "Mencari barang berdasarkan nama",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerManagement == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler management belum diinisialisasi")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if searchKeyword == "" </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Keyword pencarian tidak boleh kosong")
+                        return
+                }</span>
+
+                <span class="cov0" title="0">handlerManagement.SearchItems(searchKeyword)</span>
+        },
+}
+
+// ==================== OLD ITEMS COMMAND ====================
+
+var oldItemsCmd = &amp;cobra.Command{
+        Use:   "old-items",
+        Short: "Menampilkan barang yang perlu diganti (&gt; 100 hari)",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerOld == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler old items belum diinisialisasi")
+                        return
+                }</span>
+                <span class="cov0" title="0">handlerOld.GetOldItems()</span>
+        },
+}
+
+// ==================== REPORT COMMAND ====================
+
+var reportCmd = &amp;cobra.Command{
+        Use:   "report",
+        Short: "Menampilkan laporan investasi dan depresiasi",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if handlerReport == nil </span><span class="cov0" title="0">{
+                        fmt.Println("Error: Handler report belum diinisialisasi")
+                        return
+                }</span>
+                <span class="cov0" title="0">handlerReport.GetInvestmentReport()</span>
+        },
+}
+
+// ==================== INIT FUNCTIONS ====================
+
+func InitHandlers(hCategory *handler.HandlerCategory, hManagement *handler.HandlerManagement, hOld *handler.HandlerOld, hReport *handler.HandlerReport) <span class="cov0" title="0">{
+        handlerCategory = hCategory
+        handlerManagement = hManagement
+        handlerOld = hOld
+        handlerReport = hReport
+}</span>
+
+func init() <span class="cov8" title="1">{
+        // ===== Category Flags =====
+        // Tambah
+        categoryAddCmd.Flags().StringVarP(&amp;categoryName, "name", "n", "", "Nama kategori")
+        categoryAddCmd.Flags().StringVarP(&amp;categoryDescription, "description", "d", "", "Deskripsi kategori")
+        categoryAddCmd.MarkFlagRequired("name")
+
+        // Detail
+        categoryDetailCmd.Flags().IntVarP(&amp;categoryID, "id", "i", 0, "ID kategori")
+        categoryDetailCmd.MarkFlagRequired("id")
+
+        // Perbarui
+        categoryUpdateCmd.Flags().IntVarP(&amp;categoryID, "id", "i", 0, "ID kategori")
+        categoryUpdateCmd.Flags().StringVarP(&amp;categoryName, "name", "n", "", "Nama kategori baru")
+        categoryUpdateCmd.Flags().StringVarP(&amp;categoryDescription, "description", "d", "", "Deskripsi kategori baru")
+        categoryUpdateCmd.MarkFlagRequired("id")
+        categoryUpdateCmd.MarkFlagRequired("name")
+
+        // Hapus
+        categoryDeleteCmd.Flags().IntVarP(&amp;categoryID, "id", "i", 0, "ID kategori")
+        categoryDeleteCmd.MarkFlagRequired("id")
+
+        // Tambahkan subcommand ke category
+        categoryCmd.AddCommand(categoryListCmd)
+        categoryCmd.AddCommand(categoryAddCmd)
+        categoryCmd.AddCommand(categoryDetailCmd)
+        categoryCmd.AddCommand(categoryUpdateCmd)
+        categoryCmd.AddCommand(categoryDeleteCmd)
+
+        // ===== Item Flags =====
+        // Tambah
+        itemAddCmd.Flags().IntVarP(&amp;itemCategoryID, "category", "c", 0, "ID kategori barang")
+        itemAddCmd.Flags().StringVarP(&amp;itemName, "name", "n", "", "Nama barang")
+        itemAddCmd.Flags().Float64VarP(&amp;itemPrice, "price", "p", 0, "Harga barang")
+        itemAddCmd.Flags().StringVarP(&amp;itemPurchaseDate, "date", "d", "", "Tanggal pembelian (YYYY-MM-DD)")
+        itemAddCmd.MarkFlagRequired("category")
+        itemAddCmd.MarkFlagRequired("name")
+        itemAddCmd.MarkFlagRequired("price")
+        itemAddCmd.MarkFlagRequired("date")
+
+        // Detail
+        itemDetailCmd.Flags().IntVarP(&amp;itemID, "id", "i", 0, "ID barang")
+        itemDetailCmd.MarkFlagRequired("id")
+
+        // Perbarui
+        itemUpdateCmd.Flags().IntVarP(&amp;itemID, "id", "i", 0, "ID barang")
+        itemUpdateCmd.Flags().IntVarP(&amp;itemCategoryID, "category", "c", 0, "ID kategori barang")
+        itemUpdateCmd.Flags().StringVarP(&amp;itemName, "name", "n", "", "Nama barang")
+        itemUpdateCmd.Flags().Float64VarP(&amp;itemPrice, "price", "p", 0, "Harga barang")
+        itemUpdateCmd.Flags().StringVarP(&amp;itemPurchaseDate, "date", "d", "", "Tanggal pembelian (YYYY-MM-DD)")
+        itemUpdateCmd.MarkFlagRequired("id")
+        itemUpdateCmd.MarkFlagRequired("category")
+        itemUpdateCmd.MarkFlagRequired("name")
+        itemUpdateCmd.MarkFlagRequired("price")
+        itemUpdateCmd.MarkFlagRequired("date")
+
+        // Hapus
+        itemDeleteCmd.Flags().IntVarP(&amp;itemID, "id", "i", 0, "ID barang")
+        itemDeleteCmd.MarkFlagRequired("id")
+
+        // Cari
+        itemSearchCmd.Flags().StringVarP(&amp;searchKeyword, "keyword", "k", "", "Keyword pencarian")
+        itemSearchCmd.MarkFlagRequired("keyword")
+
+        // Tambahkan subcommand ke item
+        itemCmd.AddCommand(itemListCmd)
+        itemCmd.AddCommand(itemAddCmd)
+        itemCmd.AddCommand(itemDetailCmd)
+        itemCmd.AddCommand(itemUpdateCmd)
+        itemCmd.AddCommand(itemDeleteCmd)
+        itemCmd.AddCommand(itemSearchCmd)
+
+        // ===== Add all commands to root =====
+        rootCmd.AddCommand(categoryCmd)
+        rootCmd.AddCommand(itemCmd)
+        rootCmd.AddCommand(oldItemsCmd)
+        rootCmd.AddCommand(reportCmd)
+}</pre>
+		
+		<pre class="file" id="file4" style="display: none">package cmd
 
 import (
         "fmt"
@@ -383,7 +777,7 @@ func Home(handlerCategory handler.HandlerCategory, handlerManagement handler.Han
 }
 </pre>
 		
-		<pre class="file" id="file4" style="display: none">package cmd
+		<pre class="file" id="file5" style="display: none">package cmd
 
 import (
         "bufio"
@@ -612,7 +1006,7 @@ func SearchItems(handlerManagement handler.HandlerManagement) <span class="cov0"
         fmt.Scanln(&amp;choice)</span>
 }</pre>
 		
-		<pre class="file" id="file5" style="display: none">package cmd
+		<pre class="file" id="file6" style="display: none">package cmd
 
 import (
         "fmt"
@@ -660,7 +1054,7 @@ func ManagementSubmenu(handlerManagement handler.HandlerManagement, handlerCateg
 }
 </pre>
 		
-		<pre class="file" id="file6" style="display: none">package cmd
+		<pre class="file" id="file7" style="display: none">package cmd
 
 import (
         "fmt"
@@ -696,7 +1090,26 @@ func ReportSubmenu(handlerReport handler.HandlerReport) <span class="cov0" title
 }
 </pre>
 		
-		<pre class="file" id="file7" style="display: none">package database
+		<pre class="file" id="file8" style="display: none">package cmd
+
+import (
+        "fmt"
+
+        "github.com/spf13/cobra"
+)
+
+var rootCmd = &amp;cobra.Command{
+        Use:   "inventaris",
+        Short: "Aplikasi Inventaris Sederhana dengan Golang CLI",
+}
+
+func Execute()<span class="cov0" title="0">{
+        if err := rootCmd.Execute(); err != nil </span><span class="cov0" title="0">{
+                fmt.Println(err)
+        }</span>
+}</pre>
+		
+		<pre class="file" id="file9" style="display: none">package database
 
 import (
         "context"
@@ -711,7 +1124,7 @@ type PgxIface interface {
         Exec(ctx context.Context, sql string, args ...any) (pgconn.CommandTag, error)
 }
 
-func InitDB() (*pgx.Conn, error) <span class="cov0" title="0">{
+func InitDB() (*pgx.Conn, error) <span class="cov8" title="1">{
         connStr := "user=postgres password=8824001 dbname=db-inventaris sslmode=disable host=localhost"
         conn, err := pgx.Connect(context.Background(), connStr)
 
@@ -719,7 +1132,7 @@ func InitDB() (*pgx.Conn, error) <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file8" style="display: none">package handler
+		<pre class="file" id="file10" style="display: none">package handler
 
 import (
         "fmt"
@@ -798,7 +1211,7 @@ func (handlerCategory *HandlerCategory) DeleteCategory(id int) <span class="cov0
 }
 </pre>
 		
-		<pre class="file" id="file9" style="display: none">package handler
+		<pre class="file" id="file11" style="display: none">package handler
 
 import (
         "fmt"
@@ -916,7 +1329,7 @@ func (handlerManagement *HandlerManagement) SearchItems(keyword string) <span cl
         fmt.Printf("\nTotal items found: %d\n", len(items))</span>
 }</pre>
 		
-		<pre class="file" id="file10" style="display: none">package handler
+		<pre class="file" id="file12" style="display: none">package handler
 
 import (
         "fmt"
@@ -962,7 +1375,7 @@ func (handlerOld *HandlerOld) GetOldItems() <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file11" style="display: none">package handler
+		<pre class="file" id="file13" style="display: none">package handler
 
 import (
         "fmt"
@@ -1051,12 +1464,10 @@ func (handlerReport *HandlerReport) GetItemDepreciationReport(id int) <span clas
 }
 </pre>
 		
-		<pre class="file" id="file12" style="display: none">package main
+		<pre class="file" id="file14" style="display: none">package main
 
 import (
         "context"
-        "flag"
-        "fmt"
         "log"
         "project-app-inventaris-cli-azwin/cmd"
         "project-app-inventaris-cli-azwin/database"
@@ -1068,15 +1479,6 @@ import (
 )
 
 func main() <span class="cov0" title="0">{
-        // Define CLI flags
-        listItems := flag.Bool("list", false, "List all inventory items")
-        searchItem := flag.String("search", "", "Search items by name (keyword)")
-        oldItems := flag.Bool("old", false, "Show items older than 100 days")
-        report := flag.Bool("report", false, "Show investment and depreciation report")
-        interactive := flag.Bool("interactive", false, "Run in interactive mode")
-        
-        flag.Parse()
-
         //init DB connection
         db, err := database.InitDB()
 
@@ -1113,37 +1515,15 @@ func main() <span class="cov0" title="0">{
         serviceReport := service.NewServiceReport(&amp;repoReport)
         handlerReport := handler.NewHandlerReport(&amp;serviceReport)
 
-        // Handle CLI commands
-        if *listItems </span><span class="cov0" title="0">{
-                handlerManagement.GetAllItems()
-                return
-        }</span>
+        // Inisialisasi handlers untuk CLI commands
+        cmd.InitHandlers(&amp;handlerCategory, &amp;handlerManagement, &amp;handlerOld, &amp;handlerReport)
 
-        <span class="cov0" title="0">if *searchItem != "" </span><span class="cov0" title="0">{
-                handlerManagement.SearchItems(*searchItem)
-                return
-        }</span>
-
-        <span class="cov0" title="0">if *oldItems </span><span class="cov0" title="0">{
-                handlerOld.GetOldItems()
-                return
-        }</span>
-
-        <span class="cov0" title="0">if *report </span><span class="cov0" title="0">{
-                handlerReport.GetInvestmentReport()
-                return
-        }</span>
-
-        // Default to interactive mode if no flags or -interactive flag is provided
-        <span class="cov0" title="0">if *interactive || flag.NFlag() == 0 </span><span class="cov0" title="0">{
-                cmd.Home(handlerCategory, handlerManagement, handlerOld, handlerReport)
-        }</span> else<span class="cov0" title="0"> {
-                fmt.Println("Use -h or --help to see available commands")
-        }</span>
+        // Eksekusi Cobra CLI
+        cmd.Execute()</span>
 }
 </pre>
 		
-		<pre class="file" id="file13" style="display: none">package repository
+		<pre class="file" id="file15" style="display: none">package repository
 
 import (
         "context"
@@ -1171,7 +1551,7 @@ func NewrepoCategory(db database.PgxIface) RepositoryCateogry <span class="cov8"
         }
 }</span>
 
-// Function to see all category
+// Fungsi untuk melihat semua kategori
 func (repo *RepositoryCateogry) GetCategory() ([]model.Category, error) <span class="cov8" title="1">{
         query := `SELECT id, name, description FROM categories ORDER BY id ASC;`
 
@@ -1195,7 +1575,7 @@ func (repo *RepositoryCateogry) GetCategory() ([]model.Category, error) <span cl
 }
 
 
-// Function to add a new category
+// Fungsi untuk menambahkan kategori baru
 func (repo *RepositoryCateogry) AddCategory(name, description string) error <span class="cov8" title="1">{
         // Validasi duplikasi nama kategori
         checkQuery := `SELECT COUNT(*) FROM categories WHERE LOWER(name) = LOWER($1)`
@@ -1219,7 +1599,7 @@ func (repo *RepositoryCateogry) AddCategory(name, description string) error <spa
         <span class="cov8" title="1">return nil</span>
 }
 
-// Function to see category by id
+// Fungsi untuk melihat kategori berdasarkan id
 func (repo *RepositoryCateogry) GetCategoryById(id int) (model.Category, error) <span class="cov8" title="1">{
         query := `SELECT id, name, description FROM categories WHERE id = $1`
 
@@ -1232,7 +1612,7 @@ func (repo *RepositoryCateogry) GetCategoryById(id int) (model.Category, error) 
         <span class="cov8" title="1">return category, nil</span>
 }
 
-// Function to update category
+// Fungsi untuk memperbarui kategori
 func (repo *RepositoryCateogry) UpdateCategory(id int, name, description string) error <span class="cov8" title="1">{
         // Validasi duplikasi nama kategori (kecuali ID yang sama)
         checkQuery := `SELECT COUNT(*) FROM categories WHERE LOWER(name) = LOWER($1) AND id != $2`
@@ -1255,7 +1635,7 @@ func (repo *RepositoryCateogry) UpdateCategory(id int, name, description string)
         <span class="cov8" title="1">return nil</span>
 }
 
-// Function to delete category
+// Fungsi untuk menghapus kategori
 func (repo *RepositoryCateogry) DeleteCategory(id int) error <span class="cov8" title="1">{
         query := `DELETE FROM categories WHERE id = $1`
 
@@ -1267,7 +1647,7 @@ func (repo *RepositoryCateogry) DeleteCategory(id int) error <span class="cov8" 
         <span class="cov8" title="1">return nil</span>
 }</pre>
 		
-		<pre class="file" id="file14" style="display: none">package repository
+		<pre class="file" id="file16" style="display: none">package repository
 
 import (
         "context"
@@ -1296,7 +1676,7 @@ func NewrepoManagement(db database.PgxIface) RepositoryManagement <span class="c
         }
 }</span>
 
-// Function to get all items with category name and usage days
+// Fungsi untuk mendapatkan semua item dengan nama kategori dan hari pemakaian
 func (repo *RepositoryManagement) GetAllItems() ([]model.Management, error) <span class="cov8" title="1">{
         query := `
                 SELECT 
@@ -1338,7 +1718,7 @@ func (repo *RepositoryManagement) GetAllItems() ([]model.Management, error) <spa
         <span class="cov8" title="1">return items, nil</span>
 }
 
-// Function to add a new item
+// Fungsi untuk menambahkan item baru
 func (repo *RepositoryManagement) AddItem(categoryId int, name string, price float64, purchaseDate string) error <span class="cov8" title="1">{
         // Validasi duplikasi nama barang dalam kategori yang sama
         checkQuery := `SELECT COUNT(*) FROM items WHERE LOWER(name) = LOWER($1) AND category_id = $2`
@@ -1367,7 +1747,7 @@ func (repo *RepositoryManagement) AddItem(categoryId int, name string, price flo
         <span class="cov8" title="1">return nil</span>
 }
 
-// Function to get item by id
+// Fungsi untuk mendapatkan item berdasarkan id
 func (repo *RepositoryManagement) GetItemById(id int) (model.Management, error) <span class="cov8" title="1">{
         query := `
                 SELECT 
@@ -1399,7 +1779,7 @@ func (repo *RepositoryManagement) GetItemById(id int) (model.Management, error) 
         <span class="cov8" title="1">return item, nil</span>
 }
 
-// Function to update item
+// Fungsi untuk memperbarui item
 func (repo *RepositoryManagement) UpdateItem(id int, categoryId int, name string, price float64, purchaseDate string) error <span class="cov8" title="1">{
         // Validasi duplikasi nama barang dalam kategori yang sama (kecuali ID yang sama)
         checkQuery := `SELECT COUNT(*) FROM items WHERE LOWER(name) = LOWER($1) AND category_id = $2 AND id != $3`
@@ -1429,7 +1809,7 @@ func (repo *RepositoryManagement) UpdateItem(id int, categoryId int, name string
         <span class="cov8" title="1">return nil</span>
 }
 
-// Function to delete item
+// Fungsi untuk menghapus item
 func (repo *RepositoryManagement) DeleteItem(id int) error <span class="cov8" title="1">{
         query := `DELETE FROM items WHERE id = $1`
 
@@ -1441,7 +1821,7 @@ func (repo *RepositoryManagement) DeleteItem(id int) error <span class="cov8" ti
         <span class="cov8" title="1">return nil</span>
 }
 
-// Function to search items by name keyword
+// Fungsi untuk mencari item berdasarkan kata kunci nama
 func (repo *RepositoryManagement) SearchItemsByName(keyword string) ([]model.Management, error) <span class="cov8" title="1">{
         query := `
                 SELECT 
@@ -1486,7 +1866,7 @@ func (repo *RepositoryManagement) SearchItemsByName(keyword string) ([]model.Man
 
 </pre>
 		
-		<pre class="file" id="file15" style="display: none">package repository
+		<pre class="file" id="file17" style="display: none">package repository
 
 import (
         "context"
@@ -1508,7 +1888,7 @@ func NewRepositoryOld(db database.PgxIface) RepositoryOld <span class="cov8" tit
         }
 }</span>
 
-// Function to get items that have been used for more than 100 days
+// Fungsi untuk mendapatkan item yang telah digunakan lebih dari 100 hari
 func (repo *RepositoryOld) GetOldItems() ([]model.Management, error) <span class="cov8" title="1">{
         query := `
                 SELECT 
@@ -1553,7 +1933,7 @@ func (repo *RepositoryOld) GetOldItems() ([]model.Management, error) <span class
 
 </pre>
 		
-		<pre class="file" id="file16" style="display: none">package repository
+		<pre class="file" id="file18" style="display: none">package repository
 
 import (
         "context"
@@ -1576,7 +1956,7 @@ func NewRepositoryReport(db database.PgxIface) RepositoryReport <span class="cov
         }
 }</span>
 
-// Function to get all items with usage days for depreciation calculation
+// Fungsi untuk mendapatkan semua item dengan hari pemakaian untuk perhitungan depresiasi
 func (repo *RepositoryReport) GetAllItemsForReport() ([]model.Management, error) <span class="cov8" title="1">{
         query := `
                 SELECT 
@@ -1618,7 +1998,7 @@ func (repo *RepositoryReport) GetAllItemsForReport() ([]model.Management, error)
         <span class="cov8" title="1">return items, nil</span>
 }
 
-// Function to get item by id for depreciation report
+// Fungsi untuk mendapatkan item berdasarkan id untuk laporan depresiasi
 func (repo *RepositoryReport) GetItemByIdForReport(id int) (model.Management, error) <span class="cov8" title="1">{
         query := `
                 SELECT 
@@ -1651,7 +2031,7 @@ func (repo *RepositoryReport) GetItemByIdForReport(id int) (model.Management, er
 }
 </pre>
 		
-		<pre class="file" id="file17" style="display: none">package service
+		<pre class="file" id="file19" style="display: none">package service
 
 import (
         "project-app-inventaris-cli-azwin/model"
@@ -1697,7 +2077,7 @@ func (serviceCategory *ServiceCategory) DeleteCategory(id int) error <span class
 }</span>
 </pre>
 		
-		<pre class="file" id="file18" style="display: none">package service
+		<pre class="file" id="file20" style="display: none">package service
 
 import (
         "project-app-inventaris-cli-azwin/model"
@@ -1746,7 +2126,7 @@ func (serviceManagement *ServiceManagement) SearchItemsByName(keyword string) ([
         return serviceManagement.RepoManagement.SearchItemsByName(keyword)
 }</pre>
 		
-		<pre class="file" id="file19" style="display: none">package service
+		<pre class="file" id="file21" style="display: none">package service
 
 import (
         "project-app-inventaris-cli-azwin/model"
@@ -1773,7 +2153,7 @@ func (serviceOld *ServiceOld) GetOldItems() ([]model.Management, error) <span cl
 
 </pre>
 		
-		<pre class="file" id="file20" style="display: none">package service
+		<pre class="file" id="file22" style="display: none">package service
 
 import (
         "math"
@@ -1796,19 +2176,19 @@ func NewServiceReport(repoReport repository.RepositoryReportInterface) ServiceRe
         }
 }</span>
 
-// Calculate depreciation using declining balance method (20% per year)
+// Hitung depresiasi menggunakan metode saldo menurun (20% per tahun)
 func calculateDepreciation(price float64, usageDays int) float64 <span class="cov8" title="1">{
-        // Calculate years (including fractional years)
+        // Hitung tahun (termasuk pecahan tahun)
         years := float64(usageDays) / 365.0
         
-        // Declining balance: Current Value = Initial Value × (1 - rate)^years
-        // Rate = 20% = 0.20
+        // Saldo menurun: Nilai Sekarang = Nilai Awal × (1 - tingkat)^tahun
+        // Tingkat = 20% = 0.20
         currentValue := price * math.Pow(0.80, years)
         
         return currentValue
 }</span>
 
-// Get total investment report
+// Dapatkan laporan total investasi
 func (serviceReport *ServiceReport) GetInvestmentReport() ([]model.Management, float64, float64, error) <span class="cov8" title="1">{
         items, err := serviceReport.RepoReport.GetAllItemsForReport()
         if err != nil </span><span class="cov8" title="1">{
@@ -1827,7 +2207,7 @@ func (serviceReport *ServiceReport) GetInvestmentReport() ([]model.Management, f
         <span class="cov8" title="1">return items, totalInvestment, totalCurrentValue, nil</span>
 }
 
-// Get depreciation report for specific item
+// Dapatkan laporan depresiasi untuk item tertentu
 func (serviceReport *ServiceReport) GetItemDepreciationReport(id int) (model.Management, float64, float64, error) <span class="cov8" title="1">{
         item, err := serviceReport.RepoReport.GetItemByIdForReport(id)
         if err != nil </span><span class="cov8" title="1">{

@@ -53,5 +53,5 @@ func main() {
 	cmd.InitHandlers(&handlerCategory, &handlerManagement, &handlerOld, &handlerReport)
 
 	// Eksekusi Cobra CLI
-	cmd.Execute()
+	cmd.Home(handlerCategory, handlerManagement, handlerOld, handlerReport)
 }
