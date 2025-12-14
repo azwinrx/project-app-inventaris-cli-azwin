@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// Test GetAllItemsForReport - Success
+// Test GetAllItemsForReport - Sukses
 func TestGetAllItemsForReport_Success(t *testing.T) {
 	purchaseDate := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	
@@ -61,7 +61,7 @@ func TestGetAllItemsForReport_Error(t *testing.T) {
 	}
 }
 
-// Test GetAllItemsForReport - Empty Result
+// Test GetAllItemsForReport - Hasil Kosong
 func TestGetAllItemsForReport_EmptyResult(t *testing.T) {
 	mockDB := &MockDB{
 		queryResult: &MockRows{
@@ -81,7 +81,7 @@ func TestGetAllItemsForReport_EmptyResult(t *testing.T) {
 	}
 }
 
-// Test GetAllItemsForReport - Scan Error
+// Test GetAllItemsForReport - Error Scan
 func TestGetAllItemsForReport_ScanError(t *testing.T) {
 	mockDB := &MockDB{
 		queryResult: &MockRows{
@@ -100,7 +100,7 @@ func TestGetAllItemsForReport_ScanError(t *testing.T) {
 	}
 }
 
-// Test GetItemByIdForReport - Success
+// Test GetItemByIdForReport - Sukses
 func TestGetItemByIdForReport_Success(t *testing.T) {
 	purchaseDate := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	
@@ -139,7 +139,7 @@ func TestGetItemByIdForReport_Success(t *testing.T) {
 	}
 }
 
-// Test GetItemByIdForReport - Not Found
+// Test GetItemByIdForReport - Tidak Ditemukan
 func TestGetItemByIdForReport_NotFound(t *testing.T) {
 	mockDB := &MockDB{
 		queryRowResult: &MockRow{
@@ -159,7 +159,7 @@ func TestGetItemByIdForReport_NotFound(t *testing.T) {
 	}
 }
 
-// Test GetItemByIdForReport - Scan Error
+// Test GetItemByIdForReport - Error Scan
 func TestGetItemByIdForReport_ScanError(t *testing.T) {
 	mockDB := &MockDB{
 		queryRowResult: &MockRow{
@@ -176,7 +176,7 @@ func TestGetItemByIdForReport_ScanError(t *testing.T) {
 	}
 }
 
-// Test GetItemByIdForReport - Different Category
+// Test GetItemByIdForReport - Kategori Berbeda
 func TestGetItemByIdForReport_DifferentCategory(t *testing.T) {
 	purchaseDate := time.Date(2023, 6, 15, 0, 0, 0, 0, time.UTC)
 	

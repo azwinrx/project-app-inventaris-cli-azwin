@@ -27,7 +27,7 @@ func NewrepoManagement(db database.PgxIface) RepositoryManagement {
 	}
 }
 
-// Function to get all items with category name and usage days
+// Fungsi untuk mendapatkan semua item dengan nama kategori dan hari pemakaian
 func (repo *RepositoryManagement) GetAllItems() ([]model.Management, error) {
 	query := `
 		SELECT 
@@ -69,7 +69,7 @@ func (repo *RepositoryManagement) GetAllItems() ([]model.Management, error) {
 	return items, nil
 }
 
-// Function to add a new item
+// Fungsi untuk menambahkan item baru
 func (repo *RepositoryManagement) AddItem(categoryId int, name string, price float64, purchaseDate string) error {
 	// Validasi duplikasi nama barang dalam kategori yang sama
 	checkQuery := `SELECT COUNT(*) FROM items WHERE LOWER(name) = LOWER($1) AND category_id = $2`
@@ -98,7 +98,7 @@ func (repo *RepositoryManagement) AddItem(categoryId int, name string, price flo
 	return nil
 }
 
-// Function to get item by id
+// Fungsi untuk mendapatkan item berdasarkan id
 func (repo *RepositoryManagement) GetItemById(id int) (model.Management, error) {
 	query := `
 		SELECT 
@@ -130,7 +130,7 @@ func (repo *RepositoryManagement) GetItemById(id int) (model.Management, error) 
 	return item, nil
 }
 
-// Function to update item
+// Fungsi untuk memperbarui item
 func (repo *RepositoryManagement) UpdateItem(id int, categoryId int, name string, price float64, purchaseDate string) error {
 	// Validasi duplikasi nama barang dalam kategori yang sama (kecuali ID yang sama)
 	checkQuery := `SELECT COUNT(*) FROM items WHERE LOWER(name) = LOWER($1) AND category_id = $2 AND id != $3`
@@ -160,7 +160,7 @@ func (repo *RepositoryManagement) UpdateItem(id int, categoryId int, name string
 	return nil
 }
 
-// Function to delete item
+// Fungsi untuk menghapus item
 func (repo *RepositoryManagement) DeleteItem(id int) error {
 	query := `DELETE FROM items WHERE id = $1`
 
@@ -172,7 +172,7 @@ func (repo *RepositoryManagement) DeleteItem(id int) error {
 	return nil
 }
 
-// Function to search items by name keyword
+// Fungsi untuk mencari item berdasarkan kata kunci nama
 func (repo *RepositoryManagement) SearchItemsByName(keyword string) ([]model.Management, error) {
 	query := `
 		SELECT 

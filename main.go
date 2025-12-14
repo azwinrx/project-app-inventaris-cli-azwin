@@ -49,6 +49,9 @@ func main() {
 	serviceReport := service.NewServiceReport(&repoReport)
 	handlerReport := handler.NewHandlerReport(&serviceReport)
 
-	// Run in interactive mode
-	cmd.Home(handlerCategory, handlerManagement, handlerOld, handlerReport)
+	// Inisialisasi handlers untuk CLI commands
+	cmd.InitHandlers(&handlerCategory, &handlerManagement, &handlerOld, &handlerReport)
+
+	// Eksekusi Cobra CLI
+	cmd.Execute()
 }

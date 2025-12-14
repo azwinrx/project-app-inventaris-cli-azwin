@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// Test GetOldItems - Success
+// Test GetOldItems - Sukses
 func TestGetOldItems_Success(t *testing.T) {
 	purchaseDate := time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC)
 	
@@ -49,7 +49,7 @@ func TestGetOldItems_Error(t *testing.T) {
 	}
 }
 
-// Test GetOldItems - Empty Result
+// Test GetOldItems - Hasil Kosong
 func TestGetOldItems_EmptyResult(t *testing.T) {
 	mockDB := &MockDB{
 		queryResult: &MockRows{
@@ -69,7 +69,7 @@ func TestGetOldItems_EmptyResult(t *testing.T) {
 	}
 }
 
-// Test GetOldItems - Scan Error
+// Test GetOldItems - Error Scan
 func TestGetOldItems_ScanError(t *testing.T) {
 	mockDB := &MockDB{
 		queryResult: &MockRows{

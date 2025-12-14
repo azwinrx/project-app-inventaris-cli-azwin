@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-// MockDB untuk testing category
+// MockDB untuk testing kategori
 type MockDBCategory struct {
 	QueryFunc    func(ctx context.Context, sql string, args ...interface{}) (pgx.Rows, error)
 	QueryRowFunc func(ctx context.Context, sql string, args ...interface{}) pgx.Row
@@ -45,7 +45,7 @@ func (m *MockDBCategory) Close(ctx context.Context) error {
 	return nil
 }
 
-// Test GetCategory - Success
+// Test GetCategory - Sukses
 func TestGetCategory_Success(t *testing.T) {
 	mockDB := &MockDBCategory{
 		QueryFunc: func(ctx context.Context, sql string, args ...interface{}) (pgx.Rows, error) {
@@ -90,7 +90,7 @@ func TestGetCategory_Error(t *testing.T) {
 	}
 }
 
-// Test AddCategory - Success
+// Test AddCategory - Sukses
 func TestAddCategory_Success(t *testing.T) {
 	mockDB := &MockDBCategory{
 		QueryRowFunc: func(ctx context.Context, sql string, args ...interface{}) pgx.Row {
@@ -109,7 +109,7 @@ func TestAddCategory_Success(t *testing.T) {
 	}
 }
 
-// Test AddCategory - Duplicate Name
+// Test AddCategory - Nama Duplikat
 func TestAddCategory_DuplicateName(t *testing.T) {
 	mockDB := &MockDBCategory{
 		QueryRowFunc: func(ctx context.Context, sql string, args ...interface{}) pgx.Row {
@@ -125,7 +125,7 @@ func TestAddCategory_DuplicateName(t *testing.T) {
 	}
 }
 
-// Test GetCategoryById - Success
+// Test GetCategoryById - Sukses
 func TestGetCategoryById_Success(t *testing.T) {
 	mockDB := &MockDBCategory{
 		QueryRowFunc: func(ctx context.Context, sql string, args ...interface{}) pgx.Row {
@@ -145,7 +145,7 @@ func TestGetCategoryById_Success(t *testing.T) {
 	}
 }
 
-// Test GetCategoryById - Not Found
+// Test GetCategoryById - Tidak Ditemukan
 func TestGetCategoryById_NotFound(t *testing.T) {
 	mockDB := &MockDBCategory{
 		QueryRowFunc: func(ctx context.Context, sql string, args ...interface{}) pgx.Row {
@@ -161,7 +161,7 @@ func TestGetCategoryById_NotFound(t *testing.T) {
 	}
 }
 
-// Test UpdateCategory - Success
+// Test UpdateCategory - Sukses
 func TestUpdateCategory_Success(t *testing.T) {
 	mockDB := &MockDBCategory{
 		QueryRowFunc: func(ctx context.Context, sql string, args ...interface{}) pgx.Row {
@@ -180,7 +180,7 @@ func TestUpdateCategory_Success(t *testing.T) {
 	}
 }
 
-// Test UpdateCategory - Duplicate Name
+// Test UpdateCategory - Nama Duplikat
 func TestUpdateCategory_DuplicateName(t *testing.T) {
 	mockDB := &MockDBCategory{
 		QueryRowFunc: func(ctx context.Context, sql string, args ...interface{}) pgx.Row {
@@ -196,7 +196,7 @@ func TestUpdateCategory_DuplicateName(t *testing.T) {
 	}
 }
 
-// Test DeleteCategory - Success
+// Test DeleteCategory - Sukses
 func TestDeleteCategory_Success(t *testing.T) {
 	mockDB := &MockDBCategory{
 		ExecFunc: func(ctx context.Context, sql string, arguments ...interface{}) (pgconn.CommandTag, error) {

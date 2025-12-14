@@ -21,19 +21,19 @@ func NewServiceReport(repoReport repository.RepositoryReportInterface) ServiceRe
 	}
 }
 
-// Calculate depreciation using declining balance method (20% per year)
+// Hitung depresiasi menggunakan metode saldo menurun (20% per tahun)
 func calculateDepreciation(price float64, usageDays int) float64 {
-	// Calculate years (including fractional years)
+	// Hitung tahun (termasuk pecahan tahun)
 	years := float64(usageDays) / 365.0
 	
-	// Declining balance: Current Value = Initial Value × (1 - rate)^years
-	// Rate = 20% = 0.20
+	// Saldo menurun: Nilai Sekarang = Nilai Awal × (1 - tingkat)^tahun
+	// Tingkat = 20% = 0.20
 	currentValue := price * math.Pow(0.80, years)
 	
 	return currentValue
 }
 
-// Get total investment report
+// Dapatkan laporan total investasi
 func (serviceReport *ServiceReport) GetInvestmentReport() ([]model.Management, float64, float64, error) {
 	items, err := serviceReport.RepoReport.GetAllItemsForReport()
 	if err != nil {
@@ -52,7 +52,7 @@ func (serviceReport *ServiceReport) GetInvestmentReport() ([]model.Management, f
 	return items, totalInvestment, totalCurrentValue, nil
 }
 
-// Get depreciation report for specific item
+// Dapatkan laporan depresiasi untuk item tertentu
 func (serviceReport *ServiceReport) GetItemDepreciationReport(id int) (model.Management, float64, float64, error) {
 	item, err := serviceReport.RepoReport.GetItemByIdForReport(id)
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 	"project-app-inventaris-cli-azwin/model"
 )
 
-// Mock Repository for Report Service
+// Mock Repository untuk Service Report
 type MockRepoReportService struct {
 	GetAllItemsForReportFunc func() ([]model.Management, error)
 	GetItemByIdForReportFunc func(id int) (model.Management, error)
@@ -28,7 +28,7 @@ func (m *MockRepoReportService) GetItemByIdForReport(id int) (model.Management, 
 	return model.Management{}, nil
 }
 
-// Test GetInvestmentReport - Success
+// Test GetInvestmentReport - Sukses
 func TestServiceGetInvestmentReport_Success(t *testing.T) {
 	mockRepo := &MockRepoReportService{
 		GetAllItemsForReportFunc: func() ([]model.Management, error) {
@@ -75,7 +75,7 @@ func TestServiceGetInvestmentReport_Error(t *testing.T) {
 	}
 }
 
-// Test GetInvestmentReport - Empty Items
+// Test GetInvestmentReport - Item Kosong
 func TestServiceGetInvestmentReport_EmptyItems(t *testing.T) {
 	mockRepo := &MockRepoReportService{
 		GetAllItemsForReportFunc: func() ([]model.Management, error) {
@@ -103,7 +103,7 @@ func TestServiceGetInvestmentReport_EmptyItems(t *testing.T) {
 	}
 }
 
-// Test GetItemDepreciationReport - Success
+// Test GetItemDepreciationReport - Sukses
 func TestServiceGetItemDepreciationReport_Success(t *testing.T) {
 	mockRepo := &MockRepoReportService{
 		GetItemByIdForReportFunc: func(id int) (model.Management, error) {

@@ -20,7 +20,7 @@ func NewRepositoryOld(db database.PgxIface) RepositoryOld {
 	}
 }
 
-// Function to get items that have been used for more than 100 days
+// Fungsi untuk mendapatkan item yang telah digunakan lebih dari 100 hari
 func (repo *RepositoryOld) GetOldItems() ([]model.Management, error) {
 	query := `
 		SELECT 

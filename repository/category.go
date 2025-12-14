@@ -26,7 +26,7 @@ func NewrepoCategory(db database.PgxIface) RepositoryCateogry {
 	}
 }
 
-// Function to see all category
+// Fungsi untuk melihat semua kategori
 func (repo *RepositoryCateogry) GetCategory() ([]model.Category, error) {
 	query := `SELECT id, name, description FROM categories ORDER BY id ASC;`
 
@@ -50,7 +50,7 @@ func (repo *RepositoryCateogry) GetCategory() ([]model.Category, error) {
 }
 
 
-// Function to add a new category
+// Fungsi untuk menambahkan kategori baru
 func (repo *RepositoryCateogry) AddCategory(name, description string) error {
 	// Validasi duplikasi nama kategori
 	checkQuery := `SELECT COUNT(*) FROM categories WHERE LOWER(name) = LOWER($1)`
@@ -74,7 +74,7 @@ func (repo *RepositoryCateogry) AddCategory(name, description string) error {
 	return nil
 }
 
-// Function to see category by id
+// Fungsi untuk melihat kategori berdasarkan id
 func (repo *RepositoryCateogry) GetCategoryById(id int) (model.Category, error) {
 	query := `SELECT id, name, description FROM categories WHERE id = $1`
 
@@ -87,7 +87,7 @@ func (repo *RepositoryCateogry) GetCategoryById(id int) (model.Category, error) 
 	return category, nil
 }
 
-// Function to update category
+// Fungsi untuk memperbarui kategori
 func (repo *RepositoryCateogry) UpdateCategory(id int, name, description string) error {
 	// Validasi duplikasi nama kategori (kecuali ID yang sama)
 	checkQuery := `SELECT COUNT(*) FROM categories WHERE LOWER(name) = LOWER($1) AND id != $2`
@@ -110,7 +110,7 @@ func (repo *RepositoryCateogry) UpdateCategory(id int, name, description string)
 	return nil
 }
 
-// Function to delete category
+// Fungsi untuk menghapus kategori
 func (repo *RepositoryCateogry) DeleteCategory(id int) error {
 	query := `DELETE FROM categories WHERE id = $1`
 

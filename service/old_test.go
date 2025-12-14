@@ -7,7 +7,7 @@ import (
 	"project-app-inventaris-cli-azwin/model"
 )
 
-// Mock Repository for Old Service
+// Mock Repository untuk Service Old
 type MockRepoOldService struct {
 	GetOldItemsFunc func() ([]model.Management, error)
 }
@@ -19,7 +19,7 @@ func (m *MockRepoOldService) GetOldItems() ([]model.Management, error) {
 	return nil, nil
 }
 
-// Test GetOldItems - Success
+// Test GetOldItems - Sukses
 func TestServiceGetOldItems_Success(t *testing.T) {
 	mockRepo := &MockRepoOldService{
 		GetOldItemsFunc: func() ([]model.Management, error) {
@@ -58,7 +58,7 @@ func TestServiceGetOldItems_Error(t *testing.T) {
 	}
 }
 
-// Test GetOldItems - Empty Result
+// Test GetOldItems - Hasil Kosong
 func TestServiceGetOldItems_EmptyResult(t *testing.T) {
 	mockRepo := &MockRepoOldService{
 		GetOldItemsFunc: func() ([]model.Management, error) {

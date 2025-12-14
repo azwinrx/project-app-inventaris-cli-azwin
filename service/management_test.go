@@ -8,7 +8,7 @@ import (
 	"project-app-inventaris-cli-azwin/model"
 )
 
-// Mock Repository for Management Service
+// Mock Repository untuk Service Management
 type MockRepoManagementService struct {
 	GetAllItemsFunc       func() ([]model.Management, error)
 	AddItemFunc           func(categoryId int, name string, price float64, purchaseDate string) error
@@ -60,7 +60,7 @@ func (m *MockRepoManagementService) SearchItemsByName(keyword string) ([]model.M
 	return nil, nil
 }
 
-// Test GetAllItems - Success
+// Test GetAllItems - Sukses
 func TestServiceGetAllItems_Success(t *testing.T) {
 	mockRepo := &MockRepoManagementService{
 		GetAllItemsFunc: func() ([]model.Management, error) {
@@ -99,7 +99,7 @@ func TestServiceGetAllItems_Error(t *testing.T) {
 	}
 }
 
-// Test AddItem - Success
+// Test AddItem - Sukses
 func TestServiceAddItem_Success(t *testing.T) {
 	mockRepo := &MockRepoManagementService{
 		AddItemFunc: func(categoryId int, name string, price float64, purchaseDate string) error {
@@ -131,7 +131,7 @@ func TestServiceAddItem_Error(t *testing.T) {
 	}
 }
 
-// Test GetItemById - Success
+// Test GetItemById - Sukses
 func TestServiceGetItemById_Success(t *testing.T) {
 	mockRepo := &MockRepoManagementService{
 		GetItemByIdFunc: func(id int) (model.Management, error) {
@@ -167,7 +167,7 @@ func TestServiceGetItemById_Error(t *testing.T) {
 	}
 }
 
-// Test UpdateItem - Success
+// Test UpdateItem - Sukses
 func TestServiceUpdateItem_Success(t *testing.T) {
 	mockRepo := &MockRepoManagementService{
 		UpdateItemFunc: func(id int, categoryId int, name string, price float64, purchaseDate string) error {
@@ -199,7 +199,7 @@ func TestServiceUpdateItem_Error(t *testing.T) {
 	}
 }
 
-// Test DeleteItem - Success
+// Test DeleteItem - Sukses
 func TestServiceDeleteItem_Success(t *testing.T) {
 	mockRepo := &MockRepoManagementService{
 		DeleteItemFunc: func(id int) error {
@@ -231,7 +231,7 @@ func TestServiceDeleteItem_Error(t *testing.T) {
 	}
 }
 
-// Test SearchItemsByName - Success
+// Test SearchItemsByName - Sukses
 func TestServiceSearchItemsByName_Success(t *testing.T) {
 	mockRepo := &MockRepoManagementService{
 		SearchItemsByNameFunc: func(keyword string) ([]model.Management, error) {
@@ -273,7 +273,7 @@ func TestServiceSearchItemsByName_Error(t *testing.T) {
 	}
 }
 
-// Test SearchItemsByName - Empty Result
+// Test SearchItemsByName - Hasil Kosong
 func TestServiceSearchItemsByName_EmptyResult(t *testing.T) {
 	mockRepo := &MockRepoManagementService{
 		SearchItemsByNameFunc: func(keyword string) ([]model.Management, error) {

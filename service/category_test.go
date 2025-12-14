@@ -7,7 +7,7 @@ import (
 	"project-app-inventaris-cli-azwin/model"
 )
 
-// Mock Repository for Category Service
+// Mock Repository untuk Service Category
 type MockRepoCategoryService struct {
 	GetCategoryFunc      func() ([]model.Category, error)
 	AddCategoryFunc      func(name, description string) error
@@ -51,7 +51,7 @@ func (m *MockRepoCategoryService) DeleteCategory(id int) error {
 	return nil
 }
 
-// Test GetCategory - Success
+// Test GetCategory - Sukses
 func TestServiceGetCategory_Success(t *testing.T) {
 	mockRepo := &MockRepoCategoryService{
 		GetCategoryFunc: func() ([]model.Category, error) {
@@ -90,7 +90,7 @@ func TestServiceGetCategory_Error(t *testing.T) {
 	}
 }
 
-// Test AddCategory - Success
+// Test AddCategory - Sukses
 func TestServiceAddCategory_Success(t *testing.T) {
 	mockRepo := &MockRepoCategoryService{
 		AddCategoryFunc: func(name, description string) error {
@@ -122,7 +122,7 @@ func TestServiceAddCategory_Error(t *testing.T) {
 	}
 }
 
-// Test GetCategoryById - Success
+// Test GetCategoryById - Sukses
 func TestServiceGetCategoryById_Success(t *testing.T) {
 	mockRepo := &MockRepoCategoryService{
 		GetCategoryByIdFunc: func(id int) (model.Category, error) {
@@ -158,7 +158,7 @@ func TestServiceGetCategoryById_Error(t *testing.T) {
 	}
 }
 
-// Test UpdateCategory - Success
+// Test UpdateCategory - Sukses
 func TestServiceUpdateCategory_Success(t *testing.T) {
 	mockRepo := &MockRepoCategoryService{
 		UpdateCategoryFunc: func(id int, name, description string) error {
@@ -190,7 +190,7 @@ func TestServiceUpdateCategory_Error(t *testing.T) {
 	}
 }
 
-// Test DeleteCategory - Success
+// Test DeleteCategory - Sukses
 func TestServiceDeleteCategory_Success(t *testing.T) {
 	mockRepo := &MockRepoCategoryService{
 		DeleteCategoryFunc: func(id int) error {

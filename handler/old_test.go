@@ -7,7 +7,7 @@ import (
 	"project-app-inventaris-cli-azwin/model"
 )
 
-// Mock Service for Old Handler
+// Mock Service untuk Handler Old
 type MockServiceOld struct {
 	GetOldItemsFunc func() ([]model.Management, error)
 }
@@ -19,7 +19,7 @@ func (m *MockServiceOld) GetOldItems() ([]model.Management, error) {
 	return nil, nil
 }
 
-// Test GetOldItems - Success
+// Test GetOldItems - Sukses
 func TestHandlerGetOldItems_Success(t *testing.T) {
 	mockService := &MockServiceOld{
 		GetOldItemsFunc: func() ([]model.Management, error) {
@@ -57,7 +57,7 @@ func TestHandlerGetOldItems_Error(t *testing.T) {
 	}
 }
 
-// Test GetOldItems - No Items
+// Test GetOldItems - Tidak Ada Item
 func TestHandlerGetOldItems_NoItems(t *testing.T) {
 	mockService := &MockServiceOld{
 		GetOldItemsFunc: func() ([]model.Management, error) {

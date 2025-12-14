@@ -194,7 +194,7 @@ func TestGetAllItems_Error(t *testing.T) {
 	}
 }
 
-// Test AddItem - Success
+// Test AddItem - Sukses
 func TestAddItem_Success(t *testing.T) {
 	mockDB := &MockDB{
 		execResult: pgconn.CommandTag{},
@@ -222,7 +222,7 @@ func TestAddItem_Error(t *testing.T) {
 	}
 }
 
-// Test GetItemById - Success
+// Test GetItemById - Sukses
 func TestGetItemById_Success(t *testing.T) {
 	purchaseDate := time.Date(2023, 1, 15, 0, 0, 0, 0, time.UTC)
 	mockRow := &MockRow{
@@ -263,7 +263,7 @@ func TestGetItemById_Error(t *testing.T) {
 	}
 }
 
-// Test UpdateItem - Success
+// Test UpdateItem - Sukses
 func TestUpdateItem_Success(t *testing.T) {
 	mockDB := &MockDB{
 		execResult: pgconn.CommandTag{},
@@ -291,7 +291,7 @@ func TestUpdateItem_Error(t *testing.T) {
 	}
 }
 
-// Test DeleteItem - Success
+// Test DeleteItem - Sukses
 func TestDeleteItem_Success(t *testing.T) {
 	mockDB := &MockDB{
 		execResult: pgconn.CommandTag{},
@@ -319,7 +319,7 @@ func TestDeleteItem_Error(t *testing.T) {
 	}
 }
 
-// Test SearchItemsByName - Success
+// Test SearchItemsByName - Sukses
 func TestSearchItemsByName_Success(t *testing.T) {
 	purchaseDate := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	
@@ -348,7 +348,7 @@ func TestSearchItemsByName_Success(t *testing.T) {
 	}
 }
 
-// Test SearchItemsByName - No Results
+// Test SearchItemsByName - Tidak Ada Hasil
 func TestSearchItemsByName_NoResults(t *testing.T) {
 	mockDB := &MockDB{
 		queryResult: &MockRows{
@@ -382,7 +382,7 @@ func TestSearchItemsByName_Error(t *testing.T) {
 	}
 }
 
-// Test SearchItemsByName - Scan Error
+// Test SearchItemsByName - Error Scan
 func TestSearchItemsByName_ScanError(t *testing.T) {
 	mockDB := &MockDB{
 		queryResult: &MockRows{

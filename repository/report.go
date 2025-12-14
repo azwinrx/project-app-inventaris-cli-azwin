@@ -21,7 +21,7 @@ func NewRepositoryReport(db database.PgxIface) RepositoryReport {
 	}
 }
 
-// Function to get all items with usage days for depreciation calculation
+// Fungsi untuk mendapatkan semua item dengan hari pemakaian untuk perhitungan depresiasi
 func (repo *RepositoryReport) GetAllItemsForReport() ([]model.Management, error) {
 	query := `
 		SELECT 
@@ -63,7 +63,7 @@ func (repo *RepositoryReport) GetAllItemsForReport() ([]model.Management, error)
 	return items, nil
 }
 
-// Function to get item by id for depreciation report
+// Fungsi untuk mendapatkan item berdasarkan id untuk laporan depresiasi
 func (repo *RepositoryReport) GetItemByIdForReport(id int) (model.Management, error) {
 	query := `
 		SELECT 
