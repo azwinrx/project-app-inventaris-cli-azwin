@@ -2,6 +2,10 @@
 
 Aplikasi CLI untuk mengelola inventaris barang kantor dengan fitur lengkap termasuk kategori, manajemen barang, laporan depresiasi, dan pencarian.
 
+## Youtube Link
+
+link : https://youtu.be/9ECItQdY3Gw
+
 ## Cara Penggunaan
 
 ### Build Aplikasi
